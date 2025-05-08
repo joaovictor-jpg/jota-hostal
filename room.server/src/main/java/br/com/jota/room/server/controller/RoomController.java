@@ -25,4 +25,11 @@ public class RoomController {
     public ResponseEntity<List<RoomDetails>> listRoom() {
         return ResponseEntity.ok().body(roomService.listRoom());
     }
+
+    @PostMapping
+    public ResponseEntity<Void> save(@RequestBody @Valid CreatedRoom createdRoom, UriComponentsBuilder uriComponentsBuilder) {
+        UUID id = roomService.saveRoom(createdRoom);
+        var url = uriComponentsBuilder.path("/{idroom}").buildAndExpand(id).toUri();
+        return ResponseEntity.created(url).build();
+    }
 }
