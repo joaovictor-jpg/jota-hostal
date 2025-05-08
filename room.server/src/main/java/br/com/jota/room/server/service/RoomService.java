@@ -45,6 +45,12 @@ public class RoomService {
         return new RoomDetails(room);
     }
 
+    public void deleteRoom(Integer roomNumber) {
+        Room room = roomRespository.findByRoomNumber(roomNumber).orElseThrow(() -> new EntityNotFoundException("Room not found"));
+
+        roomRespository.delete(room);
+    }
+
     private Room updateRoom(UpdateRoom updateRoom, Room room) {
         updateIfNotNull(updateRoom::areaM2, room::setAreaM2);
         updateIfNotNull(updateRoom::roomNumber, room::setRoomNumber);
