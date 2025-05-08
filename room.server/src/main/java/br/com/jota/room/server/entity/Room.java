@@ -61,40 +61,80 @@ public class Room {
         return areaM2;
     }
 
+    public void setAreaM2(BigDecimal areaM2) {
+        this.areaM2 = areaM2;
+    }
+
     public Integer getRoomNumber() {
         return roomNumber;
+    }
+
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public BigDecimal getRentalValue() {
         return rentalValue;
     }
 
+    public void setRentalValue(BigDecimal rentalValue) {
+        this.rentalValue = rentalValue;
+    }
+
     public BigDecimal getCondoFee() {
         return condoFee;
+    }
+
+    public void setCondoFee(BigDecimal condoFee) {
+        this.condoFee = condoFee;
     }
 
     public Boolean getAcceptsAnimals() {
         return acceptsAnimals;
     }
 
+    public void setAcceptsAnimals(Boolean acceptsAnimals) {
+        this.acceptsAnimals = acceptsAnimals;
+    }
+
     public String getAddress() {
         return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getTelephone() {
         return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public Status getStatus() {
         return status;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public LocalDateTime getCreatedAt() {

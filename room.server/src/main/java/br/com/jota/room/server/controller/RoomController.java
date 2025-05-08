@@ -2,6 +2,7 @@ package br.com.jota.room.server.controller;
 
 import br.com.jota.room.server.dto.CreatedRoom;
 import br.com.jota.room.server.dto.RoomDetails;
+import br.com.jota.room.server.dto.UpdateRoom;
 import br.com.jota.room.server.service.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,11 @@ public class RoomController {
         UUID id = roomService.saveRoom(createdRoom);
         var url = uriComponentsBuilder.path("/{idroom}").buildAndExpand(id).toUri();
         return ResponseEntity.created(url).build();
+    }
+
+    @PutMapping("/{roomNumber}")
+    public ResponseEntity<RoomDetails> update(@PathVariable("roomNumber") Integer roomNumber, @RequestBody @Valid UpdateRoom updateRoom) {
+        var room = roomService.updateRoomByRoomNumber(roomNumber, updateRoom);
+        return ResponseEntity.ok().body(room);
     }
 }
