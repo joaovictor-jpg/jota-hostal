@@ -14,18 +14,28 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idRoom;
+    @Column(name = "area_m2")
     private BigDecimal areaM2;
+    @Column(name = "room_number")
     private Integer roomNumber;
+    @Column(name = "rental_value")
     private BigDecimal rentalValue;
+    @Column(name = "condo_fee")
     private BigDecimal condoFee;
+    @Column(name = "accepts_animals")
     private Boolean acceptsAnimals;
     private String address;
     private String description;
     private String telephone;
+    @Column(name = "room_status")
     private Status status;
+    @Column(name = "image_url")
     private String imageUrl;
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     public Room() {

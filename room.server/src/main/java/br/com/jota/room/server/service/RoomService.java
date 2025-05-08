@@ -1,9 +1,10 @@
 package br.com.jota.room.server.service;
 
-import br.com.jota.room.server.dto.CreatedRoom;
+import br.com.jota.room.server.dto.RoomDetails;
 import br.com.jota.room.server.respository.RoomRespository;
-import jakarta.persistence.Transient;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RoomService {
@@ -13,8 +14,7 @@ public class RoomService {
         this.roomRespository = roomRespository;
     }
 
-    @Transient
-    public void saveRoom(CreatedRoom createdRoom) {
-
+    public List<RoomDetails> listRoom() {
+        return roomRespository.findAll().stream().map(RoomDetails::new).toList();
     }
 }
