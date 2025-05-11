@@ -15,6 +15,8 @@ public class Booking {
     private UUID id;
     @Column(name = "room_id")
     private UUID roomId;
+    @Column(name = "room_number")
+    private Integer roomNumber;
     @Column(name = "name_guest")
     private String nameGuest;
     @Column(name = "total_price")
@@ -37,8 +39,9 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(UUID roomId, String nameGuest, BigDecimal totalPrice, String telephone, String message, BookingStatus status, LocalDateTime checkIn, LocalDateTime checkOut, String guestCpf) {
+    public Booking(UUID roomId, Integer roomNumber, String nameGuest, BigDecimal totalPrice, String telephone, String message, BookingStatus status, LocalDateTime checkIn, LocalDateTime checkOut, String guestCpf) {
         this.roomId = roomId;
+        this.roomNumber = roomNumber;
         this.nameGuest = nameGuest;
         this.totalPrice = totalPrice;
         this.telephone = telephone;
@@ -55,6 +58,10 @@ public class Booking {
 
     public UUID getRoomId() {
         return roomId;
+    }
+
+    public Integer getRoomNumber() {
+        return roomNumber;
     }
 
     public String getNameGuest() {
