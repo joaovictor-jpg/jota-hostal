@@ -40,6 +40,12 @@ public class RoomController {
         return ResponseEntity.ok().body(room);
     }
 
+    @GetMapping("/{roomNumber}")
+    public ResponseEntity<RoomDetails> findByNumberRoom(@PathVariable("roomNumber") Integer roomNumber) {
+        var room = roomService.findBydRoomNumber(roomNumber);
+        return ResponseEntity.ok().body(new RoomDetails(room));
+    }
+
     @DeleteMapping("/{roomNumber}")
     public ResponseEntity<Void> delete(@PathVariable("roomNumber") Integer roomNumber) {
         roomService.deleteRoom(roomNumber);
