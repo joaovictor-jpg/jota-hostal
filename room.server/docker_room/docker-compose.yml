@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_room_data:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
@@ -24,8 +24,8 @@ services:
     depends_on:
       - postgres
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - pgadmin_room_data:/var/lib/pgadmin
 
 volumes:
-  postgres_data:
-  pgadmin_data:
+  postgres_room_data:
+  pgadmin_room_data:

@@ -4,6 +4,7 @@ import br.com.jota.Booking.dtos.CreatedBooking;
 import br.com.jota.Booking.dtos.RoomDetails;
 import br.com.jota.Booking.dtos.Status;
 import br.com.jota.Booking.entity.Booking;
+import br.com.jota.Booking.entity.BookingStatus;
 import br.com.jota.Booking.exception.BusinessRuleException;
 import br.com.jota.Booking.http.RoomClient;
 import br.com.jota.Booking.repository.BookingRepository;
@@ -18,7 +19,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static br.com.jota.Booking.entity.BookingStatus.PENDING;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 
@@ -55,11 +55,11 @@ public class BookingService {
         }
 
         Booking booking = new Booking(room.idRoom(), room.roomNumber(), createdBooking.nameGuest(), valueTotalForRoom, createdBooking.telephone(), createdBooking.message(),
-                PENDING, createdBooking.checkIn(), createdBooking.checkOut(), createdBooking.guestCpf());
+                BookingStatus.PENDING, createdBooking.checkIn(), createdBooking.checkOut(), createdBooking.guestCpf());
 
         bookingRepository.save(booking);
 
-        Message message = new Message(("Criei um pagamento com o id " + createdBooking.roomNumber()).getBytes());
+        Message message = new Message(("Reserva quarto " + createdBooking.roomNumber()).getBytes());
 
         rabbitTemplate.send("ReservationRequested", message);
     }

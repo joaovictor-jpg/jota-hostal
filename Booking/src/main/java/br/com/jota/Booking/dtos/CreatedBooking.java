@@ -1,5 +1,6 @@
 package br.com.jota.Booking.dtos;
 
+import br.com.jota.Booking.entity.BookingStatus;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
