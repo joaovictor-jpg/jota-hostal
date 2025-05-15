@@ -72,4 +72,8 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
+    public List<BookingDetails> listBooking() {
+        return bookingRepository.findAll().stream().map(BookingDetails::new).toList();
+    }
+
 }
