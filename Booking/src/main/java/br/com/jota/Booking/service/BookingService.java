@@ -46,9 +46,9 @@ public class BookingService {
         BigDecimal valueTotalForRoom = room.rentalValue().add(room.condoFee());
         BigDecimal interestRate = new BigDecimal("0.10");
 
-        if (room.status().equals(Status.INACTIVE)) {
-            throw new BusinessRuleException("Quarto em Ocupado");
-        }
+//        if (!room.status().equals(Status.ACTIVE)) {
+//            throw new BusinessRuleException("Quarto em Ocupado");
+//        }
 
         if (createdBooking.checkIn().getDayOfWeek().equals(SATURDAY) || createdBooking.checkIn().getDayOfWeek().equals(SUNDAY)) {
             valueTotalForRoom = valueTotalForRoom.multiply(interestRate);
@@ -59,9 +59,7 @@ public class BookingService {
 
         bookingRepository.save(booking);
 
-        Message message = new Message(("Reserva quarto " + createdBooking.roomNumber()).getBytes());
-
-        rabbitTemplate.send("ReservationRequested", message);
+        rabbitTemplate.convertAndSend("ReservationRequested", room.roomNumber());
     }
 
 }

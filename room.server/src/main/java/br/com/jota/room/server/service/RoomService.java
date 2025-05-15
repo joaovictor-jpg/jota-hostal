@@ -6,6 +6,8 @@ import br.com.jota.room.server.dto.UpdateRoom;
 import br.com.jota.room.server.entity.Room;
 import br.com.jota.room.server.respository.RoomRespository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +16,16 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static br.com.jota.room.server.entity.Status.RESERVED;
+
 @Service
 public class RoomService {
     private final RoomRespository roomRespository;
-
-    public RoomService(RoomRespository roomRespository) {
+    public RoomService(RoomRespository roomRespository, RabbitTemplate rabbitTemplate) {
         this.roomRespository = roomRespository;
+        this.rabbitTemplate = rabbitTemplate;
     }
+    public final RabbitTemplate rabbitTemplate;
 
     public List<RoomDetails> listRoom() {
         return roomRespository.findAll().stream().map(RoomDetails::new).toList();
@@ -45,10 +50,22 @@ public class RoomService {
         return new RoomDetails(room);
     }
 
+    public void emitirRoomAvailable() {
+        Message message = new Message("successfully booked room".getBytes());
+        rabbitTemplate.send("RoomAvailable", message);
+    }
+
     public void deleteRoom(Integer roomNumber) {
         Room room = roomRespository.findByRoomNumber(roomNumber).orElseThrow(() -> new EntityNotFoundException("Room not found"));
 
         roomRespository.delete(room);
+    }
+
+    public void updatedStatusRoom(Integer roomNumber) {
+        Room room = roomRespository.findByRoomNumber(roomNumber).orElseThrow(() -> new EntityNotFoundException("Room not found"));
+        room.setStatus(RESERVED);
+        emitirRoomAvailable();
+        roomRespository.save(room);
     }
 
     private Room updateRoom(UpdateRoom updateRoom, Room room) {
