@@ -1,7 +1,7 @@
 package br.com.jota.Booking.amqp;
 
+import br.com.jota.Booking.dtos.RoomMessagem;
 import br.com.jota.Booking.service.BookingService;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class RoomListener {
     }
 
     @RabbitListener(queues = "RoomAvailable")
-    public void readMessage(Message message) {
-        System.out.println("Payload: " + new String(message.getBody()));
+    public void readMessage(RoomMessagem messagem) {
+        bookingService.updateStatusBooking(messagem);
     }
 }

@@ -1,7 +1,7 @@
 CREATE TABLE bookings(
     id UUID PRIMARY KEY,
-    room_id UUID NOT NULL,
     room_number NUMERIC(10) NOT NULL,
+    email VARCHAR(150) NOT NULL,
     name_guest VARCHAR(150) NOT NULL,
     total_price DECIMAL(10, 2) NOT NULL,
     telephone VARCHAR(17) NOT NULL,

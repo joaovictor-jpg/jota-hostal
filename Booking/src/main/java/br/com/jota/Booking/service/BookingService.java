@@ -1,8 +1,6 @@
 package br.com.jota.Booking.service;
 
-import br.com.jota.Booking.dtos.CreatedBooking;
-import br.com.jota.Booking.dtos.RoomDetails;
-import br.com.jota.Booking.dtos.Status;
+import br.com.jota.Booking.dtos.*;
 import br.com.jota.Booking.entity.Booking;
 import br.com.jota.Booking.entity.BookingStatus;
 import br.com.jota.Booking.exception.BusinessRuleException;
@@ -11,6 +9,7 @@ import br.com.jota.Booking.repository.BookingRepository;
 import br.com.jota.Booking.service.validation.DeadlinesForBookingRoom;
 import br.com.jota.Booking.service.validation.EntryAndExitDateValidation;
 import br.com.jota.Booking.service.validation.IValidationDate;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.com.jota.Booking.entity.BookingStatus.PREPARING;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 
@@ -54,12 +54,22 @@ public class BookingService {
             valueTotalForRoom = valueTotalForRoom.multiply(interestRate);
         }
 
-        Booking booking = new Booking(room.idRoom(), room.roomNumber(), createdBooking.nameGuest(), valueTotalForRoom, createdBooking.telephone(), createdBooking.message(),
+        Booking booking = new Booking(room.roomNumber(), createdBooking.email(), createdBooking.nameGuest(), valueTotalForRoom, createdBooking.telephone(), createdBooking.message(),
                 BookingStatus.PENDING, createdBooking.checkIn(), createdBooking.checkOut(), createdBooking.guestCpf());
 
         bookingRepository.save(booking);
 
-        rabbitTemplate.convertAndSend("ReservationRequested", room.roomNumber());
+        var bookingMessage = new BookingMessagem(booking.getId(), booking.getRoomNumber());
+
+        rabbitTemplate.convertAndSend("ReservationRequested", bookingMessage);
+    }
+
+    public void updateStatusBooking(RoomMessagem messagem) {
+        Booking booking = bookingRepository.findByIdAndRoomNumber(messagem.idBooking(), messagem.roomNumber()).orElseThrow(() -> new EntityNotFoundException("reservation not found"));
+
+        booking.setStatus(PREPARING);
+
+        bookingRepository.save(booking);
     }
 
 }

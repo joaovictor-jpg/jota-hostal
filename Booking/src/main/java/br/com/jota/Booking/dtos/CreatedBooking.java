@@ -1,6 +1,5 @@
 package br.com.jota.Booking.dtos;
 
-import br.com.jota.Booking.entity.BookingStatus;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
@@ -9,6 +8,10 @@ public record CreatedBooking(
         @NotNull(message = "Número do quarto é obrigatório")
         @Min(value = 1, message = "Número do quarto deve ser maior que zero")
         Integer roomNumber,
+        @NotBlank(message = "Email é obrigatório")
+        @Email(message = "Por favor, forneça um endereço de email válido")
+        @Size(max = 100, message = "Email deve ter no máximo 100 caracteres")
+        String email,
         @NotBlank(message = "Nome do hóspede é obrigatório")
         @Size(max = 100, message = "Nome do hóspede deve ter no máximo 100 caracteres")
         String nameGuest,

@@ -13,10 +13,9 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "room_id")
-    private UUID roomId;
     @Column(name = "room_number")
     private Integer roomNumber;
+    private String email;
     @Column(name = "name_guest")
     private String nameGuest;
     @Column(name = "total_price")
@@ -39,9 +38,9 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(UUID roomId, Integer roomNumber, String nameGuest, BigDecimal totalPrice, String telephone, String message, BookingStatus status, LocalDateTime checkIn, LocalDateTime checkOut, String guestCpf) {
-        this.roomId = roomId;
+    public Booking(Integer roomNumber, String email, String nameGuest, BigDecimal totalPrice, String telephone, String message, BookingStatus status, LocalDateTime checkIn, LocalDateTime checkOut, String guestCpf) {
         this.roomNumber = roomNumber;
+        this.email = email;
         this.nameGuest = nameGuest;
         this.totalPrice = totalPrice;
         this.telephone = telephone;
@@ -56,12 +55,12 @@ public class Booking {
         return id;
     }
 
-    public UUID getRoomId() {
-        return roomId;
-    }
-
     public Integer getRoomNumber() {
         return roomNumber;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getNameGuest() {
@@ -82,6 +81,10 @@ public class Booking {
 
     public BookingStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(BookingStatus status) {
+        this.status = status;
     }
 
     public LocalDateTime getCheckIn() {

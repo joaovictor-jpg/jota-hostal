@@ -13,19 +13,5 @@ services:
     volumes:
       - postgres_room_data:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin_room
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-    ports:
-      - "5050:80"
-    depends_on:
-      - postgres
-    volumes:
-      - pgadmin_room_data:/var/lib/pgadmin
-
 volumes:
   postgres_room_data:
-  pgadmin_room_data:

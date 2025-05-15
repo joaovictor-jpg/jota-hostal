@@ -1,8 +1,6 @@
 package br.com.jota.room.server.service;
 
-import br.com.jota.room.server.dto.CreatedRoom;
-import br.com.jota.room.server.dto.RoomDetails;
-import br.com.jota.room.server.dto.UpdateRoom;
+import br.com.jota.room.server.dto.*;
 import br.com.jota.room.server.entity.Room;
 import br.com.jota.room.server.respository.RoomRespository;
 import jakarta.persistence.EntityNotFoundException;
@@ -50,22 +48,22 @@ public class RoomService {
         return new RoomDetails(room);
     }
 
-    public void emitirRoomAvailable() {
-        Message message = new Message("successfully booked room".getBytes());
-        rabbitTemplate.send("RoomAvailable", message);
-    }
-
     public void deleteRoom(Integer roomNumber) {
         Room room = roomRespository.findByRoomNumber(roomNumber).orElseThrow(() -> new EntityNotFoundException("Room not found"));
 
         roomRespository.delete(room);
     }
 
-    public void updatedStatusRoom(Integer roomNumber) {
-        Room room = roomRespository.findByRoomNumber(roomNumber).orElseThrow(() -> new EntityNotFoundException("Room not found"));
+    public void updatedStatusRoom(BookingMessage message) {
+        Room room = roomRespository.findByRoomNumber(message.roomNumber()).orElseThrow(() -> new EntityNotFoundException("Room not found"));
         room.setStatus(RESERVED);
-        emitirRoomAvailable();
+        emitirRoomAvailable(message);
         roomRespository.save(room);
+    }
+
+    public void emitirRoomAvailable(BookingMessage message) {
+        RoomMessagem messagem = new RoomMessagem("Sucesso", message.idBooking(), message.roomNumber());
+        rabbitTemplate.convertAndSend("RoomAvailable", messagem);
     }
 
     private Room updateRoom(UpdateRoom updateRoom, Room room) {
