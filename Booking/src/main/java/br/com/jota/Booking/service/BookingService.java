@@ -10,7 +10,6 @@ import br.com.jota.Booking.service.validation.DeadlinesForBookingRoom;
 import br.com.jota.Booking.service.validation.EntryAndExitDateValidation;
 import br.com.jota.Booking.service.validation.IValidationDate;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +73,25 @@ public class BookingService {
 
     public List<BookingDetails> listBooking() {
         return bookingRepository.findAll().stream().map(BookingDetails::new).toList();
+    }
+
+    public List<BookingDetails> findBookingByCpfOrEmail(FindByCpfOrEmail findByCpfOrEmail) {
+
+        List<Booking> bookings = new ArrayList<>();
+
+        if (findByCpfOrEmail.guestCpf() != null) {
+            bookings = bookingRepository.findByGuestCpf(findByCpfOrEmail.guestCpf());
+        }else  {
+            bookings = bookingRepository.findByEmail(findByCpfOrEmail.email());
+        }
+
+
+
+        if (bookings.isEmpty()) {
+            throw new BusinessRuleException("No reservation for this CPF or Email");
+        }
+
+        return  bookings.stream().map(BookingDetails::new).toList();
     }
 
 }
