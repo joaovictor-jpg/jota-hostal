@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/bookings")
@@ -35,5 +36,11 @@ public class BookingController {
     @GetMapping("/findByCpfOrEmail")
     public ResponseEntity<List<BookingDetails>> listBookingByCpfOrEmail(@RequestParam(required = false, name = "email") @Email String email, @RequestParam(required = false, name = "guestCpf") String cpf) {
         return ResponseEntity.ok().body(bookingService.findBookingByCpfOrEmail(new FindByCpfOrEmail(email, cpf)));
+    }
+
+    @DeleteMapping("/{idbooking}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable("idbooking")UUID idbooking) {
+        bookingService.deleteBooking(idbooking);
+        return ResponseEntity.noContent().build();
     }
 }

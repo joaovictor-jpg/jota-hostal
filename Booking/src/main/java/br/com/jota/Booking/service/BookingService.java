@@ -16,8 +16,10 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static br.com.jota.Booking.entity.BookingStatus.PREPARING;
+import static br.com.jota.Booking.entity.BookingStatus.REJECTED;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 
@@ -92,6 +94,18 @@ public class BookingService {
         }
 
         return  bookings.stream().map(BookingDetails::new).toList();
+    }
+
+    public void deleteBooking(UUID idBooking) {
+        Booking booking = bookingRepository.getReferenceById(idBooking);
+
+        if (!bookingRepository.existsById(idBooking)) {
+            throw new BusinessRuleException("Booking not found");
+        }
+
+        booking.setStatus(REJECTED);
+
+        bookingRepository.save(booking);
     }
 
 }
