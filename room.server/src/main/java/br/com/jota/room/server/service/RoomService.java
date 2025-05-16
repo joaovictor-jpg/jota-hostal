@@ -14,6 +14,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static br.com.jota.room.server.entity.Status.ACTIVE;
 import static br.com.jota.room.server.entity.Status.RESERVED;
 
 @Service
@@ -58,6 +59,12 @@ public class RoomService {
         Room room = roomRespository.findByRoomNumber(message.roomNumber()).orElseThrow(() -> new EntityNotFoundException("Room not found"));
         room.setStatus(RESERVED);
         emitirRoomAvailable(message);
+        roomRespository.save(room);
+    }
+
+    public void cancelReservation(BookingMessage message) {
+        Room room = roomRespository.findByRoomNumber(message.roomNumber()).orElseThrow(() -> new EntityNotFoundException("Room not found"));
+        room.setStatus(ACTIVE);
         roomRespository.save(room);
     }
 

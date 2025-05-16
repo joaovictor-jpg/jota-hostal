@@ -19,6 +19,11 @@ public class BookingAMQPConfig {
     }
 
     @Bean
+    public Queue cancelReservetion() {
+        return new Queue("CancelRequested", false);
+    }
+
+    @Bean
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }

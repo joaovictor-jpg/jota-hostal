@@ -2,11 +2,8 @@ package br.com.jota.room.server.amqp;
 
 import br.com.jota.room.server.dto.BookingMessage;
 import br.com.jota.room.server.service.RoomService;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
 
 @Component
 public class BookingListener {
@@ -20,5 +17,10 @@ public class BookingListener {
     @RabbitListener(queues = "ReservationRequested")
     public void readMessage(BookingMessage message) {
         roomService.updatedStatusRoom(message);
+    }
+
+    @RabbitListener(queues = "CancelRequested")
+    public void cancelReservetion(BookingMessage message) {
+        roomService.cancelReservation(message);
     }
 }

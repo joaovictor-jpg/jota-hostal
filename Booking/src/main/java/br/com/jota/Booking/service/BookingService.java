@@ -105,6 +105,10 @@ public class BookingService {
 
         booking.setStatus(REJECTED);
 
+        var bookingMessage = new BookingMessagem(booking.getId(), booking.getRoomNumber());
+
+        rabbitTemplate.convertAndSend("CancelRequested", bookingMessage);
+
         bookingRepository.save(booking);
     }
 
