@@ -52,7 +52,7 @@ public class BookingService {
 //        }
 
         if (createdBooking.checkIn().getDayOfWeek().equals(SATURDAY) || createdBooking.checkIn().getDayOfWeek().equals(SUNDAY)) {
-            valueTotalForRoom = valueTotalForRoom.multiply(interestRate);
+            valueTotalForRoom = valueTotalForRoom.add(valueTotalForRoom.multiply(interestRate));
         }
 
         Booking booking = new Booking(room.roomNumber(), createdBooking.email(), createdBooking.nameGuest(), valueTotalForRoom, createdBooking.telephone(), createdBooking.message(),
@@ -62,7 +62,11 @@ public class BookingService {
 
         var bookingMessage = new BookingMessagem(booking.getId(), booking.getRoomNumber());
 
+        var paymentCreation = new PaymentCreation(booking.getId(), booking.getEmail(), booking.getNameGuest(), booking.getTotalPrice(), booking.getTelephone(), booking.getGuestCpf());
+
         rabbitTemplate.convertAndSend("ReservationRequested", bookingMessage);
+
+        rabbitTemplate.convertAndSend("ReservationCreated", paymentCreation);
     }
 
     public void updateStatusBooking(RoomMessagem messagem) {

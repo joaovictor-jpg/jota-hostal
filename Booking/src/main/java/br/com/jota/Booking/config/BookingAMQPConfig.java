@@ -24,6 +24,11 @@ public class BookingAMQPConfig {
     }
 
     @Bean
+    public Queue reservationCreated() {
+        return new Queue("ReservationCreated", true);
+    }
+
+    @Bean
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }
