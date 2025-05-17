@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class RoomAMQPConfiguration {
     @Bean
     public Queue queue() {
-        return new Queue("RoomAvailable", false);
+        return new Queue("RoomAvailable", true);
     }
 
     @Bean

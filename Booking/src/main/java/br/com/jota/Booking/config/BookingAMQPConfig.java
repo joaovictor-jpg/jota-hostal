@@ -15,12 +15,12 @@ public class BookingAMQPConfig {
 
     @Bean
     public Queue Queue() {
-        return new Queue("ReservationRequested", false);
+        return new Queue("ReservationRequested", true);
     }
 
     @Bean
     public Queue cancelReservetion() {
-        return new Queue("CancelRequested", false);
+        return new Queue("CancelRequested", true);
     }
 
     @Bean
