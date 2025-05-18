@@ -1,0 +1,1 @@
+ALTER TABLE payments ADD COLUMN status VARCHAR(10);
