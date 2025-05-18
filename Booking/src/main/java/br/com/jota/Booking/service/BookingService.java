@@ -47,9 +47,9 @@ public class BookingService {
         BigDecimal valueTotalForRoom = room.rentalValue().add(room.condoFee());
         BigDecimal interestRate = new BigDecimal("0.10");
 
-//        if (!room.status().equals(Status.ACTIVE)) {
-//            throw new BusinessRuleException("Quarto em Ocupado");
-//        }
+        if (!room.status().equals(Status.ACTIVE)) {
+            throw new BusinessRuleException("Quarto em Ocupado");
+        }
 
         if (createdBooking.checkIn().getDayOfWeek().equals(SATURDAY) || createdBooking.checkIn().getDayOfWeek().equals(SUNDAY)) {
             valueTotalForRoom = valueTotalForRoom.add(valueTotalForRoom.multiply(interestRate));
