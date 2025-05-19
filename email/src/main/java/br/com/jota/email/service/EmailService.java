@@ -1,5 +1,6 @@
 package br.com.jota.email.service;
 
+import br.com.jota.email.dto.EmailResponse;
 import br.com.jota.email.dto.SendEmail;
 import br.com.jota.email.entity.Email;
 import br.com.jota.email.exception.RegraDeNegorcioException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class EmailService {
@@ -31,6 +33,10 @@ public class EmailService {
         emailRepository.save(new Email(email.nameGuest(), email.email(), email.roomNumber(), email.mensagem(),
                 email.checkIn(), email.checkOut()));
         sendEmail(email);
+    }
+
+    public List<EmailResponse> listEmail() {
+        return emailRepository.findAll().stream().map(EmailResponse::new).toList();
     }
 
     private void sendEmail(SendEmail email) {
