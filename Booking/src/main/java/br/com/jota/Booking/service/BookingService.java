@@ -101,11 +101,8 @@ public class BookingService {
     }
 
     public void deleteBooking(UUID idBooking) {
-        Booking booking = bookingRepository.getReferenceById(idBooking);
-
-        if (!bookingRepository.existsById(idBooking)) {
-            throw new BusinessRuleException("Booking not found");
-        }
+        Booking booking = bookingRepository.findById(idBooking)
+                .orElseThrow(() -> new BusinessRuleException("Booking not found"));
 
         booking.setStatus(REJECTED);
 
