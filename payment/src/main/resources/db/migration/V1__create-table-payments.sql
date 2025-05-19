@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS payments (
     id SERIAL PRIMARY KEY,
+    id_booking UUID NOT NULL,
     guest_name VARCHAR(100) NOT NULL,
     guest_email VARCHAR(100) NOT NULL,
     card_number VARCHAR(20),
@@ -7,8 +8,9 @@ CREATE TABLE IF NOT EXISTS payments (
     payment_value NUMERIC(10,2) NOT NULL,
     payment_type VARCHAR(50),
     guest_cpf VARCHAR(14) NOT NULL,
-    card_cvv VARCHAR(4) NOT NULL,
+    card_cvv VARCHAR(4),
     country VARCHAR(50),
+    telephone varchar(17) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP WITH TIME ZONE NULL,

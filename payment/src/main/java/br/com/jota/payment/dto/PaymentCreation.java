@@ -1,4 +1,4 @@
-package br.com.jota.Booking.dtos;
+package br.com.jota.payment.dto;
 
 import java.math.BigDecimal;
 import java.util.UUID;
