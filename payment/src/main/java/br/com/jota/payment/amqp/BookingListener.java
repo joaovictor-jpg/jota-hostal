@@ -15,6 +15,6 @@ public class BookingListener {
 
     @RabbitListener(queues = "ReservationCreated")
     public void reservationCreated(PaymentCreation paymentCreation) {
-        System.out.println(paymentCreation);
+        paymentService.createdPayment(paymentCreation);
     }
 }
