@@ -1,5 +1,6 @@
 package br.com.jota.payment.service;
 
+import br.com.jota.payment.dto.ConfirmPayment;
 import br.com.jota.payment.dto.PaymentCreation;
 import br.com.jota.payment.dto.PaymentMessage;
 import br.com.jota.payment.dto.PaymentResponse;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static br.com.jota.payment.entity.PaymentStatus.CANCELED;
+import static br.com.jota.payment.entity.PaymentStatus.CONFIRMED;
 
 @Service
 public class PaymentService {
@@ -37,6 +39,20 @@ public class PaymentService {
 
     public Payment findByBooking(UUID idBooking) {
         return paymentRepository.findByIdBooking(idBooking).orElseThrow(() -> new EntityNotFoundException("Payment not found"));
+    }
+
+    public void confirmPayment(ConfirmPayment confirmPayment) {
+        var payment = this.findByBooking(confirmPayment.idBooking());
+        payment.setCardNumber(confirmPayment.cardNumber());
+        payment.setCardValidity(confirmPayment.cardValidity());
+        payment.setPaymentType(confirmPayment.paymentType());
+        payment.setCardCVV(confirmPayment.cardCVV());
+        payment.setStatus(CONFIRMED);
+        paymentRepository.save(payment);
+
+        var paymentMessage = new PaymentMessage("confirm payment", payment.getIdBooking());
+
+        rabbitTemplate.convertAndSend("PaymentApproved", paymentMessage);
     }
 
     public void deletePayment(UUID idBooking) {

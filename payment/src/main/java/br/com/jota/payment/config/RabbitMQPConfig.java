@@ -19,6 +19,11 @@ public class RabbitMQPConfig {
     }
 
     @Bean
+    public Queue confirmPayment() {
+        return new Queue("PaymentApproved", true);
+    }
+
+    @Bean
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }

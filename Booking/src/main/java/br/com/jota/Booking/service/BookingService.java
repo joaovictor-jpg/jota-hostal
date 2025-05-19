@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static br.com.jota.Booking.entity.BookingStatus.PREPARING;
-import static br.com.jota.Booking.entity.BookingStatus.REJECTED;
+import static br.com.jota.Booking.entity.BookingStatus.*;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 
@@ -109,6 +108,15 @@ public class BookingService {
         var bookingMessage = new BookingMessagem(booking.getId(), booking.getRoomNumber());
 
         rabbitTemplate.convertAndSend("CancelRequested", bookingMessage);
+
+        bookingRepository.save(booking);
+    }
+
+    public void paymentApproved(UUID idBooking) {
+        Booking booking = bookingRepository.findById(idBooking)
+                .orElseThrow(() -> new BusinessRuleException("Booking not found"));
+
+        booking.setStatus(CONFIRMED);
 
         bookingRepository.save(booking);
     }

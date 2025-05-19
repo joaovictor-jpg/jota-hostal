@@ -17,4 +17,9 @@ public class PaymentListener {
     public void cancelPayment(PaymentMessage paymentMessage) {
         bookingService.deleteBooking(paymentMessage.idBooking());
     }
+
+    @RabbitListener(queues = "PaymentApproved")
+    public void paymentApproved(PaymentMessage paymentMessage) {
+        bookingService.paymentApproved(paymentMessage.idBooking());
+    }
 }

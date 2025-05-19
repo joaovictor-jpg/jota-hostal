@@ -111,6 +111,26 @@ public class Payment {
         return status;
     }
 
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public void setCardValidity(LocalDate cardValidity) {
+        this.cardValidity = cardValidity;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public void setCardCVV(String cardCVV) {
+        this.cardCVV = cardCVV;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public void setStatus(PaymentStatus status) {
         this.status = status;
     }
