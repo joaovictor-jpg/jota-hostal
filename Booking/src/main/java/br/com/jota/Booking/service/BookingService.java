@@ -118,6 +118,10 @@ public class BookingService {
 
         booking.setStatus(CONFIRMED);
 
+        var sendMessage = new SendEmail(booking.getEmail(), booking.getRoomNumber(), booking.getNameGuest(), "Seu quarto está recervado", booking.getCheckIn(), booking.getCheckOut());
+
+        rabbitTemplate.convertAndSend("ReservationConfirmed", sendMessage);
+
         bookingRepository.save(booking);
     }
 

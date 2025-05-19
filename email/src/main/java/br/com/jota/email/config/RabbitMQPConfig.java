@@ -1,6 +1,5 @@
-package br.com.jota.Booking.config;
+package br.com.jota.email.config;
 
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,28 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BookingAMQPConfig {
-
-    @Bean
-    public Queue Queue() {
-        return new Queue("ReservationRequested", true);
-    }
-
-    @Bean
-    public Queue cancelReservetion() {
-        return new Queue("CancelRequested", true);
-    }
-
-    @Bean
-    public Queue reservationCreated() {
-        return new Queue("ReservationCreated", true);
-    }
-
-    @Bean
-    public Queue reservationConfirmed() {
-        return new Queue("ReservationConfirmed", true);
-    }
-
+public class RabbitMQPConfig {
     @Bean
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
