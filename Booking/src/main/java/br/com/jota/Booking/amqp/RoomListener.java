@@ -1,5 +1,6 @@
 package br.com.jota.Booking.amqp;
 
+import br.com.jota.Booking.dtos.PaymentMessage;
 import br.com.jota.Booking.dtos.RoomMessagem;
 import br.com.jota.Booking.service.BookingService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
