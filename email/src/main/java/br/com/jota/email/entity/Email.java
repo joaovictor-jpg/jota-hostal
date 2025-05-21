@@ -1,5 +1,6 @@
 package br.com.jota.email.entity;
 
+import br.com.jota.email.dto.CreatedEmail;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -16,6 +17,7 @@ public class Email {
     private String email;
     private Integer roomNumber;
     private String message;
+    private String text;
     private LocalDateTime checkIn;
     private LocalDateTime checkOut;
     @CreatedDate
@@ -31,6 +33,14 @@ public class Email {
         this.message = message;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+    }
+
+    public void sendEmail(CreatedEmail email) {
+        this.name = email.nameGuest();
+        this.email = email.email();
+        this.roomNumber = email.roomNumber();
+        this.message = email.title();
+        this.text = email.text();
     }
 
     public String getId() {
@@ -51,6 +61,10 @@ public class Email {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getText() {
+        return text;
     }
 
     public LocalDateTime getCheckIn() {

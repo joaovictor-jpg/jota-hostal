@@ -1,11 +1,10 @@
 package br.com.jota.email.controller;
 
+import br.com.jota.email.dto.CreatedEmail;
 import br.com.jota.email.dto.EmailResponse;
 import br.com.jota.email.service.EmailService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +16,12 @@ public class EmailController {
 
     public EmailController(EmailService emailService) {
         this.emailService = emailService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> sendEmail(@RequestBody CreatedEmail createdEmail) {
+        emailService.createEmail(createdEmail);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
