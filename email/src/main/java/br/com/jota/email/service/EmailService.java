@@ -1,10 +1,12 @@
 package br.com.jota.email.service;
 
+import br.com.jota.email.dto.CreatedEmail;
 import br.com.jota.email.dto.EmailResponse;
 import br.com.jota.email.dto.SendEmail;
 import br.com.jota.email.entity.Email;
 import br.com.jota.email.exception.RegraDeNegorcioException;
 import br.com.jota.email.repository.EmailRepository;
+import br.com.jota.email.validation.EmailValidator;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,26 +31,34 @@ public class EmailService {
         this.emailRepository = emailRepository;
     }
 
-    public void save(SendEmail email) {
-        emailRepository.save(new Email(email.nameGuest(), email.email(), email.roomNumber(), email.mensagem(),
-                email.checkIn(), email.checkOut()));
-        sendEmail(email);
+    public void save(SendEmail sendEmail) {
+        Email email = new Email(sendEmail.nameGuest(), sendEmail.email(), sendEmail.roomNumber(), sendEmail.mensagem(),
+                sendEmail.checkIn(), sendEmail.checkOut());
+        emailRepository.save(email);
+        String text = this.messageEmail(email);
+        sendEmail(email, text);
+    }
+
+    public void createEmail(CreatedEmail createdEmail) {
+        Email email = new Email();
+        EmailValidator.validate(createdEmail);
+        email.sendEmail(createdEmail);
+        emailRepository.save(email);
+        sendEmail(email, createdEmail.text());
     }
 
     public List<EmailResponse> listEmail() {
         return emailRepository.findAll().stream().map(EmailResponse::new).toList();
     }
 
-    private void sendEmail(SendEmail email) {
+    private void sendEmail(Email email, String text) {
         MimeMessage message = sendEmail.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        String text = this.messageEmail(email);
-
         try {
             helper.setFrom(EMAIL_ORIGEM, SENDER_NAME);
-            helper.setTo(email.email());
-            helper.setSubject(email.mensagem());
+            helper.setTo(email.getEmail());
+            helper.setSubject(email.getEmail());
             helper.setText(text, true);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RegraDeNegorcioException("Erro ao enviar email");
@@ -57,7 +67,7 @@ public class EmailService {
         sendEmail.send(message);
     }
 
-    private String messageEmail(SendEmail email) {
+    private String messageEmail(Email email) {
         String htmlText = String.format(
                 """
                 <html>
@@ -82,10 +92,10 @@ public class EmailService {
                   </body>
                 </html>
                 """,
-                email.roomNumber(),
-                email.checkIn().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                email.checkOut().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                ChronoUnit.DAYS.between(email.checkIn(), email.checkOut())
+                email.getRoomNumber(),
+                email.getCheckIn().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                email.getCheckOut().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                ChronoUnit.DAYS.between(email.getCheckIn(), email.getCheckOut())
         );
 
         return htmlText;
