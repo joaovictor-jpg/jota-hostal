@@ -22,13 +22,30 @@ public class Booking {
     private LocalDateTime checkOut;
     private String guestCpf;
 
-    public Booking(UUID id, Integer roomNumber, String email, String nameGuest, BigDecimal totalPrice, String telephone, String message, BookingStatus status, LocalDateTime checkIn, LocalDateTime checkOut, String guestCpf) {
+    public Booking(UUID id, Integer roomNumber, String email, String nameGuest, BigDecimal totalPrice, String telephone,
+                   String message, BookingStatus status, LocalDateTime checkIn, LocalDateTime checkOut, String guestCpf) {
         this.theEndDateMustBeAfterTheStartDate(checkIn, checkOut);
         this.reservationDayLimits(checkIn, checkOut);
         this.id = id;
         this.roomNumber = roomNumber;
         this.email = email;
-        NameGuest = nameGuest;
+        this.NameGuest = nameGuest;
+        this.totalPrice = totalPrice;
+        this.telephone = telephone;
+        this.message = message;
+        this.status = status;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.guestCpf = guestCpf;
+    }
+
+    public Booking(Integer roomNumber, String email, String nameGuest, BigDecimal totalPrice, String telephone, String message,
+                   BookingStatus status, LocalDateTime checkIn, LocalDateTime checkOut, String guestCpf) {
+        this.theEndDateMustBeAfterTheStartDate(checkIn, checkOut);
+        this.reservationDayLimits(checkIn, checkOut);
+        this.roomNumber = roomNumber;
+        this.email = email;
+        this.NameGuest = nameGuest;
         this.totalPrice = totalPrice;
         this.telephone = telephone;
         this.message = message;
@@ -80,6 +97,10 @@ public class Booking {
 
     public String getGuestCpf() {
         return guestCpf;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
