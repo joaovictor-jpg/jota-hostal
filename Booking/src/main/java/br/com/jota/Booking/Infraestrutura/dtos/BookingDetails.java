@@ -1,7 +1,8 @@
 package br.com.jota.Booking.Infraestrutura.dtos;
 
-import br.com.jota.Booking.entity.Booking;
-import br.com.jota.Booking.entity.BookingStatus;
+
+import br.com.jota.Booking.domain.entity.Booking;
+import br.com.jota.Booking.domain.enums.BookingStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

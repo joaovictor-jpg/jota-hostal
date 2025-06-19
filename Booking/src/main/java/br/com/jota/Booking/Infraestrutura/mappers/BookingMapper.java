@@ -1,5 +1,6 @@
 package br.com.jota.Booking.Infraestrutura.mappers;
 
+import br.com.jota.Booking.Infraestrutura.dtos.BookingDetails;
 import br.com.jota.Booking.Infraestrutura.dtos.CreatedBooking;
 import br.com.jota.Booking.domain.entity.Booking;
 import br.com.jota.Booking.domain.enums.BookingStatus;
@@ -20,5 +21,9 @@ public class BookingMapper {
                 createdBooking.checkOut(),
                 createdBooking.guestCpf()
         );
+    }
+
+    public static BookingDetails BookingToBookingDetails(Booking booking) {
+        return new BookingDetails(booking);
     }
 }
