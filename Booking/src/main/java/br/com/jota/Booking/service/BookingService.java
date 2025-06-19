@@ -1,10 +1,10 @@
 package br.com.jota.Booking.service;
 
+import br.com.jota.Booking.Infraestrutura.http.RoomClient;
 import br.com.jota.Booking.dtos.*;
 import br.com.jota.Booking.entity.Booking;
 import br.com.jota.Booking.entity.BookingStatus;
 import br.com.jota.Booking.exception.BusinessRuleException;
-import br.com.jota.Booking.http.RoomClient;
 import br.com.jota.Booking.repository.BookingRepository;
 import br.com.jota.Booking.service.validation.DeadlinesForBookingRoom;
 import br.com.jota.Booking.service.validation.EntryAndExitDateValidation;
