@@ -6,11 +6,11 @@ import br.com.jota.Booking.domain.entity.Booking;
 
 import java.util.List;
 
-public class FindAllBooking implements br.com.jota.Booking.application.gateways.FindAllBooking {
+public class FindAllBookingCase implements br.com.jota.Booking.application.gateways.FindAllBooking {
 
     private final BookingRepositoryJpa repositoryJpa;
 
-    public FindAllBooking(BookingRepositoryJpa repositoryJpa) {
+    public FindAllBookingCase(BookingRepositoryJpa repositoryJpa) {
         this.repositoryJpa = repositoryJpa;
     }
 

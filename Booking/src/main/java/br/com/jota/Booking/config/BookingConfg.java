@@ -1,6 +1,7 @@
 package br.com.jota.Booking.config;
 
 import br.com.jota.Booking.Infraestrutura.gateways.DeleteCase;
+import br.com.jota.Booking.Infraestrutura.gateways.FindAllBookingCase;
 import br.com.jota.Booking.Infraestrutura.gateways.SaveBookingCase;
 import br.com.jota.Booking.Infraestrutura.gateways.VerifyRoomAvailableCase;
 import br.com.jota.Booking.Infraestrutura.http.RoomClient;
@@ -25,8 +26,13 @@ public class BookingConfg {
     }
 
     @Bean
-    public ListBooking listBooking() {
-        return new ListBookingCase();
+    public ListBooking listBooking(FindAllBooking findAllBooking) {
+        return new ListBookingCase(findAllBooking);
+    }
+
+    @Bean
+    public FindAllBooking findAllBooking(BookingRepositoryJpa repositoryJpa) {
+        return new FindAllBookingCase(repositoryJpa);
     }
 
     @Bean
